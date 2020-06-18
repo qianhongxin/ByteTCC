@@ -498,6 +498,8 @@
 		<module>bytetcc-supports-springboot</module>
 		<module>bytetcc-supports-springcloud</module>
 		<module>bytetcc-supports-dubbo</module>
-	</modules>
+        <module>bytetcc-demo</module>
+        <module>bytetcc-demo</module>
+    </modules>
 
 </project>
