@@ -41,9 +41,11 @@ public class CompensableFeignBeanPostProcessor implements BeanPostProcessor {
 			return bean;
 		}
 
+		// 创建自己的feignHandler
 		CompensableFeignHandler feignHandler = new CompensableFeignHandler();
 		feignHandler.setDelegate(handler);
 
+		// 创建自己的feign代理。方便后面干自己的事情
 		Class<?> clazz = bean.getClass();
 		Class<?>[] interfaces = clazz.getInterfaces();
 		ClassLoader loader = clazz.getClassLoader();
