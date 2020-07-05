@@ -23,6 +23,13 @@ import org.bytesoft.transaction.TransactionRecovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 干两个事情的
+ * 第一件事情，就是在系统每次刚启动的时候，对执行到一半儿的事务，还没执行结束的事务，进行恢复，继续执行这个分布式事务
+ *
+ * 第二件事情，如果就像我们现在的这个场景，就是分布式事务中所有服务的try都成功了，然后执行confirm，其他服务的confirm都成功了，
+ * 可能就1个服务的confirm失败了，此时CompensableWork会每隔一段时间，定时不断的去重试那个服务的confirm接口
+ **/
 public class CompensableWork implements Work, CompensableBeanFactoryAware {
 	static final Logger logger = LoggerFactory.getLogger(CompensableWork.class);
 
@@ -60,6 +67,7 @@ public class CompensableWork implements Work, CompensableBeanFactoryAware {
 			this.initializeIfNecessary();
 
 			long current = System.currentTimeMillis();
+			// 每隔60s才能进入if中执行compensableRecovery.timingRecover();逻辑
 			if (current >= nextRecoveryTime) {
 				nextRecoveryTime = current + this.recoveryInterval;
 
