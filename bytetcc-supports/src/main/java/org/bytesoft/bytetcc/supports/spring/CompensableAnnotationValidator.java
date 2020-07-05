@@ -37,6 +37,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 // 检查bean定义中的Compensable注解是否有
+// BeanFactoryPostProcessor在注册beanRegistry中时处理
 public class CompensableAnnotationValidator implements BeanFactoryPostProcessor {
 	static final Logger logger = LoggerFactory.getLogger(CompensableAnnotationValidator.class);
 

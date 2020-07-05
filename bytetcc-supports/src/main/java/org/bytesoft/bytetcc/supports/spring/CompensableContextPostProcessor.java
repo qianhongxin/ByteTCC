@@ -53,6 +53,7 @@ public class CompensableContextPostProcessor implements BeanFactoryPostProcessor
 			}
 
 			if (CompensableContextAware.class.isAssignableFrom(beanClass)) {
+				// 将实现了CompensableContextAware接口的类放入beanDefList
 				beanDefList.add(beanDef);
 			}
 

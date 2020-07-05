@@ -67,6 +67,7 @@ public class SpringCloudEndpointPostProcessor implements BeanFactoryPostProcesso
 		String port = this.environment.getProperty("server.port");
 		String identifier = String.format("%s:%s:%s", host, name, port);
 
+		// 给beanDefList的bean加一些属性
 		for (int i = 0; i < beanDefList.size(); i++) {
 			BeanDefinition beanDef = beanDefList.get(i);
 			MutablePropertyValues mpv = beanDef.getPropertyValues();
