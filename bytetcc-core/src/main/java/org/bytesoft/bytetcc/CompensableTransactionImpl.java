@@ -155,6 +155,7 @@ public class CompensableTransactionImpl extends TransactionListenerAdapter imple
 
 		SystemException systemEx = null;
 		try {
+			// 执行本地的confirm逻辑
 			this.fireNativeParticipantConfirm();
 		} catch (SystemException ex) {
 			systemEx = ex;
@@ -170,6 +171,7 @@ public class CompensableTransactionImpl extends TransactionListenerAdapter imple
 		}
 
 		try {
+			// 链式调用情况下，继续调用之前try成功过的的服务的confirm逻辑，即调用入口是CompensableCoordinatorController
 			this.fireRemoteParticipantConfirm();
 		} catch (HeuristicMixedException ex) {
 			logger.info("{}| confirm remote branchs failed!",
@@ -286,6 +288,7 @@ public class CompensableTransactionImpl extends TransactionListenerAdapter imple
 		boolean unFinishExists = false;
 		boolean errorExists = false;
 
+		// resourceList就是之前try成功的服务列表
 		for (int i = 0; i < this.resourceList.size(); i++) {
 			XAResourceArchive current = this.resourceList.get(i);
 			if (current.isCommitted()) {
@@ -461,6 +464,7 @@ public class CompensableTransactionImpl extends TransactionListenerAdapter imple
 		}
 	}
 
+	// cancel逻辑
 	private void fireRollback() throws IllegalStateException, SystemException {
 		CompensableLogger compensableLogger = this.beanFactory.getCompensableLogger();
 
@@ -473,6 +477,7 @@ public class CompensableTransactionImpl extends TransactionListenerAdapter imple
 
 		SystemException systemEx = null;
 		try {
+			// 执行本地的cancel逻辑
 			this.fireNativeParticipantCancel();
 		} catch (SystemException ex) {
 			systemEx = ex;
@@ -488,6 +493,7 @@ public class CompensableTransactionImpl extends TransactionListenerAdapter imple
 		}
 
 		try {
+			// 执行之前try过的服务的cancel逻辑，即调用入口是CompensableCoordinatorController
 			this.fireRemoteParticipantCancel();
 		} catch (SystemException ex) {
 			logger.info("{}| cancel remote branchs failed!",
