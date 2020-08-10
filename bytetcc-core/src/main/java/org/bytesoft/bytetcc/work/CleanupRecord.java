@@ -20,6 +20,7 @@ import javax.transaction.xa.Xid;
 import org.apache.commons.lang3.StringUtils;
 import org.bytesoft.common.utils.CommonUtils;
 
+// 记录
 public class CleanupRecord {
 
 	private boolean enabled;

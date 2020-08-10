@@ -23,6 +23,7 @@ import org.bytesoft.transaction.xa.TransactionXid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// 序列化和反序列化日志用的
 public class ArchiveDeserializerImpl implements ArchiveDeserializer {
 	static final Logger logger = LoggerFactory.getLogger(ArchiveDeserializerImpl.class);
 

@@ -45,6 +45,7 @@ import org.bytesoft.transaction.xa.XidFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// 记录日志类的一些工作
 public class SampleCompensableLogger extends VirtualLoggingSystemImpl
 		implements CompensableLogger, LoggingFlushable, CompensableBeanFactoryAware, CompensableEndpointAware {
 	static final Logger logger = LoggerFactory.getLogger(SampleCompensableLogger.class);

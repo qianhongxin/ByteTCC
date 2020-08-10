@@ -23,6 +23,7 @@
 			</list>
 		</property>
 	</bean>
+    <!-- 启动后台定时任务，即work包下的等 -->
 	<bean id="resourceAdapter" class="org.springframework.jca.support.ResourceAdapterFactoryBean">
 		<property name="workManager" ref="compensableWorkManager" />
 		<property name="resourceAdapter" ref="compensableResourceAdapter" />

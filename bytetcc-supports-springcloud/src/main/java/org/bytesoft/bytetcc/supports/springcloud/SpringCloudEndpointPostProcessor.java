@@ -30,6 +30,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 
+// 系统启动时，spring加载BeanDefinition后做的后置处理
+// 对实现CompensableEndpointAware接口的Bean做一些处理
 public class SpringCloudEndpointPostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
 	static final Logger logger = LoggerFactory.getLogger(SpringCloudEndpointPostProcessor.class);
 
@@ -42,8 +44,10 @@ public class SpringCloudEndpointPostProcessor implements BeanFactoryPostProcesso
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
+		// 存储实现了CompensableEndpointAware接口的类
 		List<BeanDefinition> beanDefList = new ArrayList<BeanDefinition>();
 		String[] beanNameArray = beanFactory.getBeanDefinitionNames();
+		// 遍历所有的BeanDefinition，找到实现了CompensableEndpointAware接口的类
 		for (int i = 0; i < beanNameArray.length; i++) {
 			String beanName = beanNameArray[i];
 			BeanDefinition beanDef = beanFactory.getBeanDefinition(beanName);
@@ -62,14 +66,20 @@ public class SpringCloudEndpointPostProcessor implements BeanFactoryPostProcesso
 			}
 		}
 
+		// 获取本机ip
 		String host = CommonUtils.getInetAddress();
+		// 获取应用名称
 		String name = this.environment.getProperty("spring.application.name");
+		// 获取服务端口
 		String port = this.environment.getProperty("server.port");
+		// 格式化
 		String identifier = String.format("%s:%s:%s", host, name, port);
 
+		// 遍历所有实现了CompensableEndpointAware接口的BeanDefinition
 		for (int i = 0; i < beanDefList.size(); i++) {
 			BeanDefinition beanDef = beanDefList.get(i);
 			MutablePropertyValues mpv = beanDef.getPropertyValues();
+			// 给BeanDefinition添加endpoint属性，值是identifier
 			mpv.addPropertyValue(CompensableEndpointAware.ENDPOINT_FIELD_NAME, identifier);
 		}
 

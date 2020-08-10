@@ -34,7 +34,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+// 这个是bytetcc提供的接口，用于调用本地的try，confirm，cancel接口实现和调用方的通信。否则调用方怎么调用我们写好的tcc三个接口呢？
 
+// 这个controller里面对外暴露了一些接口，其实我们可以想象一下，prepare、commit、rollback、forget、recover，
+// 分别对应着事务的try，事务的confirm，事务的cancel，事务的forget忽略，事务的恢复
+
+// 如果利用feign通信：然后我们各个接口进行调用的时候，不是用的那个spring cloud的feign，然后人家框架对spring cloud feign尤其特别做了很多的扩展、拦截器、动态代理
+        //spring cloud feign在进行调用的时候，人家完全重写了一些逻辑，比如说你请求的是某个接口，结果人家给重新定位到了请求那个服务的CompensableCoordinatorController，来进行某个接口的try、confirm、cancel
 @Controller
 public class CompensableCoordinatorController extends PropertyEditorSupport implements CompensableBeanFactoryAware {
 	static final Logger logger = LoggerFactory.getLogger(CompensableCoordinatorController.class);
@@ -44,6 +50,7 @@ public class CompensableCoordinatorController extends PropertyEditorSupport impl
 	@Autowired
 	private CompensableBeanFactory beanFactory;
 
+	// 对应try
 	@RequestMapping(value = "/org/bytesoft/bytetcc/prepare/{xid}", method = RequestMethod.POST)
 	@ResponseBody
 	public int prepare(@PathVariable("xid") String identifier, HttpServletResponse response) {
@@ -69,6 +76,7 @@ public class CompensableCoordinatorController extends PropertyEditorSupport impl
 		}
 	}
 
+	// 事务提交，对应confirm
 	@RequestMapping(value = "/org/bytesoft/bytetcc/commit/{xid}/{opc}", method = RequestMethod.POST)
 	@ResponseBody
 	public void commit(@PathVariable("xid") String identifier, @PathVariable("opc") boolean onePhase,
@@ -93,6 +101,7 @@ public class CompensableCoordinatorController extends PropertyEditorSupport impl
 		}
 	}
 
+	// 回滚接口，对应cancel
 	@RequestMapping(value = "/org/bytesoft/bytetcc/rollback/{xid}", method = RequestMethod.POST)
 	@ResponseBody
 	public void rollback(@PathVariable("xid") String identifier, HttpServletResponse response) {
@@ -116,6 +125,7 @@ public class CompensableCoordinatorController extends PropertyEditorSupport impl
 		}
 	}
 
+	// 事务恢复接口
 	@RequestMapping(value = "/org/bytesoft/bytetcc/recover/{flag}", method = RequestMethod.GET)
 	@ResponseBody
 	public Xid[] recover(@PathVariable("flag") int flag, HttpServletResponse response) {

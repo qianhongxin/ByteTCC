@@ -20,6 +20,7 @@ import org.bytesoft.compensable.archive.TransactionArchive;
 import org.bytesoft.transaction.archive.XAResourceArchive;
 import org.bytesoft.transaction.recovery.TransactionRecoveryCallback;
 
+// 日志接口
 public interface CompensableLogger {
 
 	/* transaction */

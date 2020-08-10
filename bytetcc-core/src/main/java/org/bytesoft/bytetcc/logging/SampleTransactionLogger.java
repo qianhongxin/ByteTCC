@@ -20,6 +20,7 @@ import org.bytesoft.transaction.archive.XAResourceArchive;
 import org.bytesoft.transaction.logging.TransactionLogger;
 import org.bytesoft.transaction.recovery.TransactionRecoveryCallback;
 
+// 打印TransactionLogger，默认不打印
 public class SampleTransactionLogger implements TransactionLogger {
 
 	public void createTransaction(TransactionArchive archive) {

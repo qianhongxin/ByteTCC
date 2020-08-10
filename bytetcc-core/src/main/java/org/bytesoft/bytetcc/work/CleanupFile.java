@@ -44,6 +44,7 @@ import org.bytesoft.transaction.xa.XidFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// 由CleanupWork调用
 public class CleanupFile implements CompensableEndpointAware, CompensableBeanFactoryAware {
 	static final Logger logger = LoggerFactory.getLogger(CleanupFile.class);
 	static final byte[] IDENTIFIER = "org.bytesoft.bytetcc.resource.cleanup".getBytes();

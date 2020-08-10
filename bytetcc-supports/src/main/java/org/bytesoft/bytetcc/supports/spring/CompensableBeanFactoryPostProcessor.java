@@ -31,6 +31,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 
 @Deprecated
+// 系统启动时，spring加载BeanDefinition后做的后置处理
+// 对实现CompensableBeanFactoryAware接口和实现了CompensableBeanFactory接口和CompensableMethodInterceptor接口的Bean做一些处理
 public class CompensableBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 	static final Logger logger = LoggerFactory.getLogger(CompensableBeanFactoryPostProcessor.class);
 
