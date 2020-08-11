@@ -46,7 +46,7 @@ public class CompensableFeignHandler implements InvocationHandler {
 
 	private InvocationHandler delegate;
 
-	// 所有的
+	// feign调用前，都要执行这个逻辑
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		if (Object.class.equals(method.getDeclaringClass())) {
 			return method.invoke(this, args);
@@ -71,6 +71,7 @@ public class CompensableFeignHandler implements InvocationHandler {
 			final TransactionResponseImpl response = new TransactionResponseImpl();
 
 			final Map<String, XAResourceArchive> participants = compensable.getParticipantArchiveMap();
+			// 对ribbon的负载均衡做了重构。即对同一个事务中，对同一个服务的调用，即confirm，cancel，必须是同一台机器，防止出问题
 			beanRegistry.setLoadBalancerInterceptor(new CompensableLoadBalancerInterceptor() {
 				public List<Server> beforeCompletion(List<Server> servers) {
 					final List<Server> readyServerList = new ArrayList<Server>();

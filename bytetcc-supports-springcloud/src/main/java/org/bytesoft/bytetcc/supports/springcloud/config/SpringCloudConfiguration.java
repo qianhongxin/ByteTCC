@@ -76,12 +76,14 @@ public class SpringCloudConfiguration extends WebMvcConfigurerAdapter implements
 		this.identifier = String.format("%s:%s:%s", host, name, port);
 	}
 
+	// 创建自己的feignHandler
 	@org.springframework.context.annotation.Bean
 	@ConditionalOnProperty(name = "feign.hystrix.enabled", havingValue = "false", matchIfMissing = true)
 	public CompensableFeignBeanPostProcessor feignPostProcessor() {
 		return new CompensableFeignBeanPostProcessor();
 	}
 
+	// 创建自己的CompensableHystrixFeignHandler
 	@org.springframework.context.annotation.Bean
 	@ConditionalOnProperty(name = "feign.hystrix.enabled")
 	@ConditionalOnClass(feign.hystrix.HystrixFeign.class)
@@ -89,6 +91,7 @@ public class SpringCloudConfiguration extends WebMvcConfigurerAdapter implements
 		return new CompensableHystrixBeanPostProcessor();
 	}
 
+	// 创建feign调用前要执行的CompensableFeignInterceptor
 	@org.springframework.context.annotation.Bean
 	public CompensableFeignInterceptor compensableFeignInterceptor() {
 		CompensableFeignInterceptor interceptor = new CompensableFeignInterceptor();
@@ -116,6 +119,7 @@ public class SpringCloudConfiguration extends WebMvcConfigurerAdapter implements
 		return new CompensableFeignErrorDecoder();
 	}
 
+	// 创建springmvc执行前要执行的interceptor
 	@org.springframework.context.annotation.Bean
 	public CompensableHandlerInterceptor compensableHandlerInterceptor() {
 		CompensableHandlerInterceptor interceptor = new CompensableHandlerInterceptor();
@@ -156,6 +160,7 @@ public class SpringCloudConfiguration extends WebMvcConfigurerAdapter implements
 		return restTemplate;
 	}
 
+	// CompensableHandlerInterceptor加入拦截器列表
 	public void addInterceptors(InterceptorRegistry registry) {
 		CompensableHandlerInterceptor compensableHandlerInterceptor = this.applicationContext
 				.getBean(CompensableHandlerInterceptor.class);

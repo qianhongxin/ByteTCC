@@ -41,6 +41,7 @@ public class TransactionManagerImpl implements TransactionManager, CompensableBe
 	@javax.inject.Inject
 	private CompensableBeanFactory beanFactory;
 
+	// 启动tcc分布式事务
 	public void begin() throws NotSupportedException, SystemException {
 		TransactionManager transactionManager = this.beanFactory.getTransactionManager();
 		CompensableManager compensableManager = this.beanFactory.getCompensableManager();
@@ -53,6 +54,7 @@ public class TransactionManagerImpl implements TransactionManager, CompensableBe
 		if (transaction != null) {
 			compensableManager.begin();
 		} else if (invocation != null) {
+		    // 负责开启一个tcc分布式事务
 			compensableManager.compensableBegin();
 		} else {
 			transactionManager.begin();

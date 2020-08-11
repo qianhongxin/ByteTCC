@@ -56,6 +56,10 @@ public class CompensableFeignInterceptor
 
 			String transactionText = ByteUtils.byteArrayToString(byteArray);
 
+			// 设置tcc事务相关信息到请求头中，被调用方接受后，从头中取出对应分布式事务上下文信息，就知道这是一个分布式事务的请求了
+
+            // 也就是说，如果你开启了一个分布式事务之后，你就可以在调用其他的服务的时候，通过header传递分布式事务的上下文也就是说，如果你开启了一个分布式事务之后，
+            // 你就可以在调用其他的服务的时候，通过header传递分布式事务的上下文
 			Map<String, Collection<String>> headers = template.headers();
 			if (headers.containsKey(HEADER_TRANCACTION_KEY) == false) {
 				template.header(HEADER_TRANCACTION_KEY, transactionText);

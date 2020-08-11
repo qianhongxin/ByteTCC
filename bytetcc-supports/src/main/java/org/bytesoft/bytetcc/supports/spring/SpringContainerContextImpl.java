@@ -33,12 +33,15 @@ public class SpringContainerContextImpl implements ContainerContext, Application
 
 	private ApplicationContext applicationContext;
 
+    // 执行comfirm逻辑
 	public void confirm(CompensableInvocation invocation) throws RuntimeException {
 		String identifier = (String) invocation.getIdentifier();
 		String confirmableKey = invocation.getConfirmableKey();
 		Method method = this.getCompensableMethod(invocation); // invocation.getMethod();
 		Object[] args = invocation.getArgs();
 
+		// 如果是简单模式，即Compensable注解的simplified为true，则从instance中获取comfirm方法
+        // 凑则从confirmableKey指向的对象中获取confirm
 		if (invocation.isSimplified()) {
 			Object instance = this.applicationContext.getBean(identifier);
 			this.confirmSimplified(method, instance, args);
@@ -74,6 +77,7 @@ public class SpringContainerContextImpl implements ContainerContext, Application
 		}
 
 		try {
+		    // 执行comfirm逻辑
 			confirmable.invoke(instance, args);
 		} catch (InvocationTargetException itex) {
 			throw new RuntimeException(itex.getTargetException());
@@ -87,6 +91,7 @@ public class SpringContainerContextImpl implements ContainerContext, Application
 
 	public void confirmComplicated(Method method, Object instance, Object[] args) throws RuntimeException {
 		try {
+            // 执行comfirm逻辑
 			method.invoke(instance, args);
 		} catch (InvocationTargetException itex) {
 			throw new RuntimeException(itex.getTargetException());
@@ -97,6 +102,7 @@ public class SpringContainerContextImpl implements ContainerContext, Application
 		}
 	}
 
+    // 执行 cancel 逻辑
 	public void cancel(CompensableInvocation invocation) throws RuntimeException {
 		String identifier = (String) invocation.getIdentifier();
 		String cancellableKey = invocation.getCancellableKey();
@@ -104,6 +110,8 @@ public class SpringContainerContextImpl implements ContainerContext, Application
 		Method method = this.getCompensableMethod(invocation); // invocation.getMethod();
 		Object[] args = invocation.getArgs();
 
+        // 如果是简单模式，即Compensable注解的simplified为true，则从instance中获取cancel方法
+        // 凑则从confirmableKey指向的对象中获取 cancel
 		if (invocation.isSimplified()) {
 			Object instance = this.applicationContext.getBean(identifier);
 			this.cancelSimplified(method, instance, args);
@@ -140,6 +148,7 @@ public class SpringContainerContextImpl implements ContainerContext, Application
 		}
 
 		try {
+            // 执行 cancel 逻辑
 			cancellable.invoke(instance, args);
 		} catch (InvocationTargetException itex) {
 			throw new RuntimeException(itex.getTargetException());
@@ -153,6 +162,7 @@ public class SpringContainerContextImpl implements ContainerContext, Application
 
 	public void cancelComplicated(Method method, Object instance, Object[] args) throws RuntimeException {
 		try {
+            // 执行 cancel 逻辑
 			method.invoke(instance, args);
 		} catch (InvocationTargetException itex) {
 			throw new RuntimeException(itex.getTargetException());

@@ -42,6 +42,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+// 执行springmvc的入口时，先执行的逻辑
 public class CompensableHandlerInterceptor implements HandlerInterceptor, CompensableEndpointAware, ApplicationContextAware {
 	private static final Logger logger = LoggerFactory.getLogger(CompensableHandlerInterceptor.class);
 

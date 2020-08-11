@@ -42,6 +42,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+// 解析目标Controller的@Compensable注解和相关信息
 public class CompensableMethodInterceptor
 		implements MethodInterceptor, CompensableSynchronization, ApplicationContextAware, CompensableBeanFactoryAware {
 	static final Logger logger = LoggerFactory.getLogger(CompensableMethodInterceptor.class);
@@ -117,6 +118,7 @@ public class CompensableMethodInterceptor
 
 		boolean desociateRequired = false;
 		try {
+		    // 封装了本次调用的一些信息，比如说目标的controller，目标的方法，目标的@Compensable注解等等一些信息
 			CompensableInvocationImpl invocation = new CompensableInvocationImpl();
 			Method method = mi.getMethod();
 			invocation.setArgs(mi.getArguments());

@@ -202,6 +202,7 @@ public class CompensableManagerImpl implements CompensableManager, CompensableBe
 		}
 	}
 
+	// 创建一堆代表分布式事务的对象，比如CompensableTransactionImpl以及一堆xid的东西
 	public void compensableBegin() throws NotSupportedException, SystemException {
 		if (this.getCompensableTransactionQuietly() != null) {
 			throw new NotSupportedException();
@@ -241,6 +242,7 @@ public class CompensableManagerImpl implements CompensableManager, CompensableBe
 			}
 		}
 
+		// TransactionRepository，基于内存map保存一些事务对象
 		compensableRepository.putTransaction(compensableXid, compensable);
 
 		compensableLogger.createTransaction(compensable.getTransactionArchive());

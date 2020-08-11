@@ -52,6 +52,8 @@ import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.Server.MetaInfo;
 import com.netflix.niws.loadbalancer.DiscoveryEnabledServer;
 
+// 给RestTemplate设置的拦截器
+// bytetcc底层也是用RestTemplate通信的，所以这里设置的intercept对所有请求都会调用前执行的
 public class CompensableRequestInterceptor
 		implements ClientHttpRequestInterceptor, CompensableEndpointAware, ApplicationContextAware {
 	static final Logger logger = LoggerFactory.getLogger(CompensableRequestInterceptor.class);

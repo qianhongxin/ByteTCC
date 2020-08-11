@@ -23,14 +23,21 @@ import org.bytesoft.compensable.CompensableInvocation;
 public class CompensableInvocationImpl implements CompensableInvocation {
 
 	private String declaringClass;
+	// 方法名称
 	private String methodName;
+	// 参数类型
 	private String[] parameterTypeArray;
+	// 指向要调用的方法
 	private transient Method method;
+	// 入参
 	private Object[] args;
+	// Compensable注解中confirmableKey的值
 	private String confirmableKey;
+    // Compensable注解中cancellableKey的值
 	private String cancellableKey;
 	private Object identifier;
 
+	// true/false标识用法
 	private boolean simplified;
 	private boolean enlisted;
 

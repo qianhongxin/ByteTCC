@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+// 执行到这里之前，会先执行CompensableHandlerInterceptor的逻辑
+
 // 这个是bytetcc提供的接口，用于调用本地的try，confirm，cancel接口实现和调用方的通信。否则调用方怎么调用我们写好的tcc三个接口呢？
 
 // 这个controller里面对外暴露了一些接口，其实我们可以想象一下，prepare、commit、rollback、forget、recover，
@@ -51,6 +53,7 @@ public class CompensableCoordinatorController extends PropertyEditorSupport impl
 	private CompensableBeanFactory beanFactory;
 
 	// 对应try
+    // xid是分布式事务的全局id，比如0a0027000011000001658de58e540006e052e312
 	@RequestMapping(value = "/org/bytesoft/bytetcc/prepare/{xid}", method = RequestMethod.POST)
 	@ResponseBody
 	public int prepare(@PathVariable("xid") String identifier, HttpServletResponse response) {
